@@ -267,6 +267,27 @@ function(include_ggml DIRECTORY SUFFIX WITH_LLAMA)
         set(GGML_SOURCES_QUANT_K
             ${DIRECTORY}/ggml-quants-k.h
             ${DIRECTORY}/ggml-quants-k.c)
+
+        if (LLAMA_METAL)
+            find_library(FOUNDATION_LIBRARY         Foundation              REQUIRED)
+            find_library(METAL_FRAMEWORK            Metal                   REQUIRED)
+            find_library(METALKIT_FRAMEWORK         MetalKit                REQUIRED)
+            find_library(METALPERFORMANCE_FRAMEWORK MetalPerformanceShaders REQUIRED)
+
+            set(GGML_METAL_SOURCES ${DIRECTORY}/ggml-metal.m ${DIRECTORY}/ggml-metal.h)
+            # get full path to the file
+            #add_compile_definitions(GGML_METAL_DIR_KERNELS="${CMAKE_CURRENT_SOURCE_DIR}/")
+
+            # copy ggml-metal.metal to bin directory
+            configure_file(${DIRECTORY}/ggml-metal.metal bin/ggml-metal.metal COPYONLY)
+
+            set(LLAMA_EXTRA_LIBS ${LLAMA_EXTRA_LIBS}
+                ${FOUNDATION_LIBRARY}
+                ${METAL_FRAMEWORK}
+                ${METALKIT_FRAMEWORK}
+                ${METALPERFORMANCE_FRAMEWORK}
+            )
+        endif()
     endif()
 
     add_library(ggml${SUFFIX} OBJECT
@@ -276,6 +297,9 @@ function(include_ggml DIRECTORY SUFFIX WITH_LLAMA)
                 ${GGML_SOURCES_CUDA}
                 ${GGML_OPENCL_SOURCES})
 
+    if (LLAMA_METAL AND GGML_METAL_SOURCES)
+        target_compile_definitions(ggml${SUFFIX} PUBLIC GGML_USE_METAL GGML_METAL_NDEBUG)
+    endif()
     target_include_directories(ggml${SUFFIX} PUBLIC ${DIRECTORY})
     target_compile_features(ggml${SUFFIX} PUBLIC c_std_11) # don't bump
 
@@ -295,6 +319,9 @@ function(include_ggml DIRECTORY SUFFIX WITH_LLAMA)
                     ${DIRECTORY}/llama.h
                     ${DIRECTORY}/${LLAMA_UTIL_SOURCE_FILE})
 
+        if (LLAMA_METAL AND GGML_METAL_SOURCES)
+            target_compile_definitions(llama${SUFFIX} PUBLIC GGML_USE_METAL GGML_METAL_NDEBUG)
+        endif()
         target_include_directories(llama${SUFFIX} PUBLIC ${DIRECTORY})
         target_compile_features(llama${SUFFIX} PUBLIC cxx_std_11) # don't bump
 
