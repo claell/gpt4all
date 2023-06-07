@@ -66,23 +66,22 @@ jobs:
       - run:
           name: Installing Qt
           command: |
-            if (-not (Test-Path "${Env:USERPROFILE}\Qt")) {
+            if (-not (Test-Path C:\Qt)) {
               Invoke-WebRequest -Uri https://gpt4all.io/ci/qt-unified-windows-x64-4.6.0-online.exe -OutFile qt-unified-windows-x64-4.6.0-online.exe
               & .\qt-unified-windows-x64-4.6.0-online.exe --no-force-installations --no-default-installations --no-size-checking --default-answer --accept-licenses --confirm-command --accept-obligations --email ${Env:QT_EMAIL} --password ${Env:QT_PASSWORD} install qt.tools.cmake qt.tools.ifw.46 qt.tools.ninja qt.qt6.651.win64_msvc2019_64 qt.qt6.651.qt5compat qt.qt6.651.debug_info qt.qt6.651.addons.qtpdf qt.qt6.651.addons.qthttpserver
             }
       - save_cache:  # this is the new step to save cache
           key: windows-qt-cache-{{ .Branch }}-{{ checksum ".circleci/config.yml" }}
           paths:
-            - '%USERPROFILE%/Qt'
+            - C:\Qt
       - run:
           name: Build
           command: |
-            $env:CMAKE_PREFIX_PATH="${Env:USERPROFILE}\Qt\6.5.1\msvc2019_64\lib\cmake"
+            $env:CMAKE_PREFIX_PATH="C:\Qt\6.5.1\msvc2019_64\lib\cmake"
             mkdir build
             cd build
-            Get-ChildItem -Path "${Env:USERPROFILE}\Qt\Tools\" -Recurse
-            & "${Env:USERPROFILE}\Qt\Tools\CMake_64\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Release -S ..\gpt4all-chat -B .
-            & "${Env:USERPROFILE}\Qt\Tools\CMake_64\bin\cmake.exe" --build . --target all
+            & "C:\Qt\Qt\Tools\CMake_64\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Release -S ..\gpt4all-chat -B .
+            & "C:\Qt\Tools\CMake_64\bin\cmake.exe" --build . --target all
 
   build-py-docs:
     docker:
