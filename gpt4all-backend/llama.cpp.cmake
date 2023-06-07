@@ -263,6 +263,7 @@ function(include_ggml DIRECTORY SUFFIX WITH_LLAMA)
     endif()
 
     set(GGML_SOURCES_QUANT_K )
+    set(GGML_METAL_SOURCES )
     if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${DIRECTORY}/ggml-quants-k.h)
         set(GGML_SOURCES_QUANT_K
             ${DIRECTORY}/ggml-quants-k.h
@@ -295,6 +296,7 @@ function(include_ggml DIRECTORY SUFFIX WITH_LLAMA)
                 ${DIRECTORY}/ggml.h
                 ${GGML_SOURCES_QUANT_K}
                 ${GGML_SOURCES_CUDA}
+                ${GGML_METAL_SOURCES}
                 ${GGML_OPENCL_SOURCES})
 
     if (LLAMA_METAL AND GGML_METAL_SOURCES)
@@ -357,29 +359,6 @@ function(include_ggml DIRECTORY SUFFIX WITH_LLAMA)
             target_compile_definitions(llama${SUFFIX} PRIVATE GGML_USE_CLBLAST)
         endif()
         target_compile_definitions(ggml${SUFFIX} PRIVATE GGML_USE_CLBLAST)
-    endif()
-
-    if (LLAMA_METAL AND DIRECTORY MATCHES "mainline$")
-        find_library(FOUNDATION_LIBRARY         Foundation              REQUIRED)
-        find_library(METAL_FRAMEWORK            Metal                   REQUIRED)
-        find_library(METALKIT_FRAMEWORK         MetalKit                REQUIRED)
-        find_library(METALPERFORMANCE_FRAMEWORK MetalPerformanceShaders REQUIRED)
-
-        set(GGML_SOURCES_METAL ggml-metal.m ggml-metal.h)
-
-        target_compile_definitions(llama${SUFFIX} PRIVATE
-            GGML_USE_METAL
-            GGML_METAL_NDEBUG)
-
-        # get full path to the file
-        #add_compile_definitions(GGML_METAL_DIR_KERNELS="${CMAKE_CURRENT_SOURCE_DIR}/")
-
-        set(LLAMA_EXTRA_LIBS ${LLAMA_EXTRA_LIBS}
-            ${FOUNDATION_LIBRARY}
-            ${METAL_FRAMEWORK}
-            ${METALKIT_FRAMEWORK}
-            ${METALPERFORMANCE_FRAMEWORK}
-            )
     endif()
 
     if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "arm" OR ${CMAKE_SYSTEM_PROCESSOR} MATCHES "aarch64")
