@@ -359,7 +359,7 @@ function(include_ggml DIRECTORY SUFFIX WITH_LLAMA)
         target_compile_definitions(ggml${SUFFIX} PRIVATE GGML_USE_CLBLAST)
     endif()
 
-    if (LLAMA_METAL)
+    if (LLAMA_METAL AND DIRECTORY MATCHES "mainline$")
         find_library(FOUNDATION_LIBRARY         Foundation              REQUIRED)
         find_library(METAL_FRAMEWORK            Metal                   REQUIRED)
         find_library(METALKIT_FRAMEWORK         MetalKit                REQUIRED)
@@ -373,9 +373,6 @@ function(include_ggml DIRECTORY SUFFIX WITH_LLAMA)
 
         # get full path to the file
         #add_compile_definitions(GGML_METAL_DIR_KERNELS="${CMAKE_CURRENT_SOURCE_DIR}/")
-
-        # copy ggml-metal.metal to bin directory
-        configure_file(ggml-metal.metal ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/ggml-metal.metal COPYONLY)
 
         set(LLAMA_EXTRA_LIBS ${LLAMA_EXTRA_LIBS}
             ${FOUNDATION_LIBRARY}
