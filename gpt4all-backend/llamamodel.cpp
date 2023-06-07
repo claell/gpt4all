@@ -116,9 +116,10 @@ bool LLamaModel::loadModel(const std::string &modelPath)
     d_ptr->params.n_parts  = params.n_parts;
 #endif
 #ifdef GGML_USE_METAL
-    // TODO better default here? this is the # of layers in a 7b llama
     std::cerr << "llama.cpp: using Metal" << std::endl;
-    d_ptr->params.n_gpu_layers = 32;
+    // metal always runs the whole model if n_gpu_layers is not 0, at least
+    // currently
+    d_ptr->params.n_gpu_layers = 1;
 #endif
 
     d_ptr->ctx = llama_init_from_file(modelPath.c_str(), d_ptr->params);
