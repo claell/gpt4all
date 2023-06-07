@@ -73,7 +73,7 @@ jobs:
       - run:
           name: Build
           command: |
-          # Find rc.exe
+            # Find rc.exe
             Write-Output "Searching for rc.exe..."
             $rcPath = Get-ChildItem -Path "C:\Program Files (x86)\Windows Kits" -Recurse -Filter "rc.exe"
             if($rcPath) { Write-Output "rc.exe found at: $($rcPath.FullName)" } else { Write-Output "rc.exe not found." }
