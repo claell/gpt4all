@@ -16,9 +16,7 @@ jobs:
             git submodule update --init --recursive
       - restore_cache:  # this is the new step to restore cache
           keys:
-            - linux-qt-cache-{{ .Branch }}-{{ checksum ".circleci/config.yml" }}
-            - linux-qt-cache-{{ .Branch }}
-            - linux-qt-cache-
+            - linux-qt-cache
       - run: 
           name: Setup Linux and Dependencies
           command: |
@@ -32,7 +30,7 @@ jobs:
               ./qt-unified-linux-x64-4.6.0-online.run --no-force-installations --no-default-installations --no-size-checking --default-answer --accept-licenses --confirm-command --accept-obligations --email $QT_EMAIL --password $QT_PASSWORD install qt.tools.cmake qt.tools.ifw.46 qt.tools.ninja qt.qt6.651.gcc_64 qt.qt6.651.qt5compat qt.qt6.651.debug_info qt.qt6.651.addons.qtpdf qt.qt6.651.addons.qthttpserver
             fi
       - save_cache:  # this is the new step to save cache
-          key: linux-qt-cache-{{ .Branch }}-{{ checksum ".circleci/config.yml" }}
+          key: linux-qt-cache
           paths:
             - ~/Qt
       - run:
@@ -57,9 +55,7 @@ jobs:
             git submodule update --init --recursive
       - restore_cache:  # this is the new step to restore cache
           keys:
-            - windows-qt-cache-{{ .Branch }}-{{ checksum ".circleci/config.yml" }}
-            - windows-qt-cache-{{ .Branch }}
-            - windows-qt-cache-
+            - windows-qt-cache
       #- run: 
           #name: Setup Windows and Dependencies
           #command: |
@@ -71,7 +67,7 @@ jobs:
               & .\qt-unified-windows-x64-4.6.0-online.exe --no-force-installations --no-default-installations --no-size-checking --default-answer --accept-licenses --confirm-command --accept-obligations --email ${Env:QT_EMAIL} --password ${Env:QT_PASSWORD} install qt.tools.cmake qt.tools.ifw.46 qt.tools.ninja qt.qt6.651.win64_msvc2019_64 qt.qt6.651.qt5compat qt.qt6.651.debug_info qt.qt6.651.addons.qtpdf qt.qt6.651.addons.qthttpserver
             }
       - save_cache:  # this is the new step to save cache
-          key: windows-qt-cache-{{ .Branch }}-{{ checksum ".circleci/config.yml" }}
+          key: windows-qt-cache
           paths:
             - C:\Qt
       - run:
@@ -82,10 +78,11 @@ jobs:
             & "C:\Qt\Tools\CMake_64\bin\cmake.exe" `
               "-DCMAKE_GENERATOR:STRING=Ninja" `
               "-DCMAKE_BUILD_TYPE=Release" `
-              "-DQT_QMAKE_EXECUTABLE:FILEPATH=C:/Qt/6.5.1/msvc2019_64/bin/qmake.exe" `
-              "-DCMAKE_PREFIX_PATH:PATH=C:/Qt/6.5.1/msvc2019_64" `
-              "-DCMAKE_C_COMPILER:FILEPATH=C:\Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.16.27023/bin/HostX64/x64/cl.exe" `
-              "-DCMAKE_CXX_COMPILER:FILEPATH=C:\Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.16.27023/bin/HostX64/x64/cl.exe" `
+              "-DQT_QMAKE_EXECUTABLE:FILEPATH=C:\Qt\6.5.1\msvc2019_64\bin\qmake.exe" `
+              "-DCMAKE_PREFIX_PATH:PATH=C:\Qt\6.5.1\msvc2019_64" `
+              "-DCMAKE_C_COMPILER:FILEPATH=C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.16.27023\bin\HostX64\x64\cl.exe" `
+              "-DCMAKE_CXX_COMPILER:FILEPATH=C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.16.27023\bin\HostX64\x64\cl.exe" `
+              "-DCMAKE_MAKE_PROGRAM:FILEPATH=C:\Qt\Tools\Ninja\ninja.exe" `
               "-DCMAKE_CXX_FLAGS_INIT:STRING=" `
               "-S ..\gpt4all-chat" `
               "-B ."
