@@ -73,18 +73,10 @@ jobs:
       - run:
           name: Build
           command: |
-            # Find rc.exe
-            Write-Output "Searching for rc.exe..."
-            $rcPath = Get-ChildItem -Path "C:\Program Files (x86)\Windows Kits" -Recurse -Filter "rc.exe"
-            if($rcPath) { Write-Output "rc.exe found at: $($rcPath.FullName)" } else { Write-Output "rc.exe not found." }
-
-            # Find kernel32.lib
-            Write-Output "Searching for kernel32.lib..."
-            $kernel32Path = Get-ChildItem -Path "C:\Program Files (x86)\Windows Kits" -Recurse -Filter "kernel32.lib"
-            if($kernel32Path) { Write-Output "kernel32.lib found at: $($kernel32Path.FullName)" } else { Write-Output "kernel32.lib not found." }
-
             & "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
-            $Env:PATH = "${Env:PATH};C:\Program Files (x86)\Windows Kits\10\bin\10.0.16299.0\x64"
+            $Env:PATH = "${Env:PATH};C:\Program Files (x86)\Windows Kits\10\bin\10.0.22000.0\x64"
+            $Env:RC = "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22000.0\x64\rc.exe"
+            $Env:LIB = "C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22000.0\um\x64\"
             mkdir build
             cd build
             & "C:\Qt\Tools\CMake_64\bin\cmake.exe" `
