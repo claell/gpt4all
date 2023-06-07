@@ -80,6 +80,7 @@ jobs:
             $env:CMAKE_PREFIX_PATH="${Env:USERPROFILE}\Qt\6.5.1\msvc2019_64\lib\cmake"
             mkdir build
             cd build
+            Get-ChildItem -Path "${Env:USERPROFILE}\Qt\Tools\" -Recurse
             & "${Env:USERPROFILE}\Qt\Tools\CMake_64\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Release -S ..\gpt4all-chat -B .
             & "${Env:USERPROFILE}\Qt\Tools\CMake_64\bin\cmake.exe" --build . --target all
 
