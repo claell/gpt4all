@@ -76,6 +76,7 @@ jobs:
             $Env:PATH = "${Env:PATH};C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.16.27023\bin\Hostx64\x64"
             mkdir build
             cd build
+            Get-ChildItem -Path "C:\Program Files (x86)\Windows Kits" -Recurse
             & "C:\Qt\Tools\CMake_64\bin\cmake.exe" `
               "-DCMAKE_GENERATOR:STRING=Ninja" `
               "-DCMAKE_BUILD_TYPE=Release" `
