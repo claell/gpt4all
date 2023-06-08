@@ -134,7 +134,7 @@ jobs:
               -DCMAKE_BUILD_TYPE=Release \
               -DCMAKE_PREFIX_PATH:PATH=~/Qt/6.5.1/macos \
               -S ../gpt4all-chat \
-              -B ."
+              -B .
             ~/Qt/Tools/CMake/CMake.app/Contents/bin/cmake --build . --target all
   build-py-docs:
     docker:
