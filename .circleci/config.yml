@@ -127,16 +127,18 @@ jobs:
       - run:
           name: Build
           command: |
-            mkdir build
-            cd build
-            ~/Qt/Tools/CMake/CMake.app/Contents/bin/cmake \
-              -DCMAKE_GENERATOR:STRING=Ninja \
-              -DCMAKE_BUILD_TYPE=Release \
-              -DCMAKE_PREFIX_PATH:PATH=~/Qt/6.5.1/macos/lib/cmake/Qt6 \
-              -DCMAKE_MAKE_PROGRAM:FILEPATH=~/Qt/Tools/Ninja/ninja \
-              -S ../gpt4all-chat \
-              -B .
-            ~/Qt/Tools/CMake/CMake.app/Contents/bin/cmake --build . --target all
+            cd ~/Qt
+            find .
+            #mkdir build
+            #cd build
+            #~/Qt/Tools/CMake/CMake.app/Contents/bin/cmake \
+              #-DCMAKE_GENERATOR:STRING=Ninja \
+              #-DCMAKE_BUILD_TYPE=Release \
+              #-DCMAKE_PREFIX_PATH:PATH=~/Qt/6.5.1/macos/lib/cmake/Qt6 \
+              #-DCMAKE_MAKE_PROGRAM:FILEPATH=~/Qt/Tools/Ninja/ninja \
+              #-S ../gpt4all-chat \
+              #-B .
+            #~/Qt/Tools/CMake/CMake.app/Contents/bin/cmake --build . --target all
   build-py-docs:
     docker:
       - image: circleci/python:3.8
