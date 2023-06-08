@@ -133,7 +133,7 @@ jobs:
               -DCMAKE_GENERATOR:STRING=Ninja \
               -DCMAKE_BUILD_TYPE=Release \
               -DCMAKE_PREFIX_PATH:PATH=~/Qt/6.5.1/macos \
-              -DCMAKE_MAKE_PROGRAM:FILEPATH=~/Qt/6.5.1/Tools/ninja \
+              -DCMAKE_MAKE_PROGRAM:FILEPATH=~/Qt/6.5.1/Tools/Ninja/ninja \
               -S ../gpt4all-chat \
               -B .
             ~/Qt/Tools/CMake/CMake.app/Contents/bin/cmake --build . --target all
