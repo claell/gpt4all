@@ -114,12 +114,12 @@ jobs:
       - run:
           name: Installing Qt
           command: |
-            if [ ! -d ~/Qt ]; then
+            #if [ ! -d ~/Qt ]; then
               curl -o qt-unified-macOS-x64-4.6.0-online.dmg https://gpt4all.io/ci/qt-unified-macOS-x64-4.6.0-online.dmg
               hdiutil attach qt-unified-macOS-x64-4.6.0-online.dmg
-              /Volumes/qt-unified-macOS-x64-4.6.0-online/qt-unified-macOS-x64-4.6.0-online.app/Contents/MacOS/qt-unified-macOS-x64-4.6.0-online --no-force-installations --no-default-installations --no-size-checking --default-answer --accept-licenses --confirm-command --accept-obligations --email $QT_EMAIL --password $QT_PASSWORD install qt.tools.cmake qt.tools.ifw.46 qt.tools.ninja qt.qt6.651.gcc_64 qt.qt6.651.qt5compat qt.qt6.651.debug_info qt.qt6.651.addons.qtpdf qt.qt6.651.addons.qthttpserver
+              /Volumes/qt-unified-macOS-x64-4.6.0-online/qt-unified-macOS-x64-4.6.0-online.app/Contents/MacOS/qt-unified-macOS-x64-4.6.0-online --no-force-installations --no-default-installations --no-size-checking --default-answer --accept-licenses --confirm-command --accept-obligations --email $QT_EMAIL --password $QT_PASSWORD install qt.tools.cmake qt.tools.ifw.46 qt.tools.ninja qt.qt6.651.clang_64 qt.qt6.651.qt5compat qt.qt6.651.debug_info qt.qt6.651.addons.qtpdf qt.qt6.651.addons.qthttpserver
               hdiutil detach /Volumes/qt-unified-macOS-x64-4.6.0-online
-            fi
+            #fi
       - save_cache:  # this is the new step to save cache
           key: macos-qt-cache
           paths:
@@ -127,18 +127,16 @@ jobs:
       - run:
           name: Build
           command: |
-            cd ~/Qt
-            find .
-            #mkdir build
-            #cd build
-            #~/Qt/Tools/CMake/CMake.app/Contents/bin/cmake \
-              #-DCMAKE_GENERATOR:STRING=Ninja \
-              #-DCMAKE_BUILD_TYPE=Release \
-              #-DCMAKE_PREFIX_PATH:PATH=~/Qt/6.5.1/macos/lib/cmake/Qt6 \
-              #-DCMAKE_MAKE_PROGRAM:FILEPATH=~/Qt/Tools/Ninja/ninja \
-              #-S ../gpt4all-chat \
-              #-B .
-            #~/Qt/Tools/CMake/CMake.app/Contents/bin/cmake --build . --target all
+            mkdir build
+            cd build
+            ~/Qt/Tools/CMake/CMake.app/Contents/bin/cmake \
+              -DCMAKE_GENERATOR:STRING=Ninja \
+              -DCMAKE_BUILD_TYPE=Release \
+              -DCMAKE_PREFIX_PATH:PATH=~/Qt/6.5.1/macos/lib/cmake/Qt6 \
+              -DCMAKE_MAKE_PROGRAM:FILEPATH=~/Qt/Tools/Ninja/ninja \
+              -S ../gpt4all-chat \
+              -B .
+            ~/Qt/Tools/CMake/CMake.app/Contents/bin/cmake --build . --target all
   build-py-docs:
     docker:
       - image: circleci/python:3.8
