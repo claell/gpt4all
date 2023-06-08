@@ -298,9 +298,7 @@ workflows:
   build-and-test-gpt4all-chat:
     jobs:
       - build-gpt4all-chat-linux
-    jobs:
       - build-gpt4all-chat-windows
-    jobs:
       - build-gpt4all-chat-macos
   # build-py-deploy:
   #   jobs:
