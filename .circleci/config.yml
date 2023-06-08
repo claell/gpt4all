@@ -72,23 +72,29 @@ jobs:
             - C:\Qt
       - run:
           name: Build
-          shell: cmd
           command: |
-            "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
+            Get-ChildItem -Path "C:\Program Files (x86)\Microsoft Visual Studio\2019" -Recurse
+            & "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
+            cl
+            link
+            $Env:PATH = "${Env:PATH};C:\Program Files (x86)\Windows Kits\10\bin\10.0.22000.0\x64"
+            $Env:RC = "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22000.0\x64\rc.exe"
+            $Env:LIB = "${Env:LIB};C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22000.0\um\x64\"
+            $Env:LIB = "${Env:LIB};C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.16.27023\lib\x64"
             mkdir build
             cd build
-            "C:\Qt\Tools\CMake_64\bin\cmake.exe" ^
-            -DCMAKE_GENERATOR:STRING=Ninja ^
-            -DCMAKE_BUILD_TYPE=Release ^
-            -DQT_QMAKE_EXECUTABLE:FILEPATH=C:\Qt\6.5.1\msvc2019_64\bin\qmake.exe ^
-            -DCMAKE_PREFIX_PATH:PATH=C:\Qt\6.5.1\msvc2019_64 ^
-            -DCMAKE_C_COMPILER:FILEPATH="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.16.27023\bin\HostX64\x64\cl.exe" ^
-            -DCMAKE_CXX_COMPILER:FILEPATH="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.16.27023\bin\HostX64\x64\cl.exe" ^
-            -DCMAKE_MAKE_PROGRAM:FILEPATH=C:\Qt\Tools\Ninja\ninja.exe ^
-            -DCMAKE_CXX_FLAGS_INIT:STRING= ^
-            -S ..\gpt4all-chat ^
-            -B .
-            "C:\Qt\Tools\CMake_64\bin\cmake.exe" --build . --target all
+            & "C:\Qt\Tools\CMake_64\bin\cmake.exe" `
+              "-DCMAKE_GENERATOR:STRING=Ninja" `
+              "-DCMAKE_BUILD_TYPE=Release" `
+              "-DQT_QMAKE_EXECUTABLE:FILEPATH=C:\Qt\6.5.1\msvc2019_64\bin\qmake.exe" `
+              "-DCMAKE_PREFIX_PATH:PATH=C:\Qt\6.5.1\msvc2019_64" `
+              "-DCMAKE_C_COMPILER:FILEPATH=C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.16.27023\bin\HostX64\x64\cl.exe" `
+              "-DCMAKE_CXX_COMPILER:FILEPATH=C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.16.27023\bin\HostX64\x64\cl.exe" `
+              "-DCMAKE_MAKE_PROGRAM:FILEPATH=C:\Qt\Tools\Ninja\ninja.exe" `
+              "-DCMAKE_CXX_FLAGS_INIT:STRING=" `
+              "-S ..\gpt4all-chat" `
+              "-B ."
+            & "C:\Qt\Tools\CMake_64\bin\cmake.exe" "--build ." "--target all"
   build-py-docs:
     docker:
       - image: circleci/python:3.8
