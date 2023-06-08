@@ -74,6 +74,7 @@ jobs:
           name: Build
           command: |
             Get-ChildItem -Path "C:\Program Files (x86)\Microsoft Visual Studio\2019" -Recurse
+            Get-ChildItem -Path "C:\Program Files\Microsoft Visual Studio\2019" -Recurse
             & "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
             cl
             link
