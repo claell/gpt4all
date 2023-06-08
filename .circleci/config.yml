@@ -130,8 +130,8 @@ jobs:
             export CMAKE_PREFIX_PATH=~/Qt/6.5.1/macos/lib/cmake
             mkdir build
             cd build
-            ~/Qt/Tools/CMake/bin/cmake -DCMAKE_BUILD_TYPE=Release -S ../gpt4all-chat -B .
-            ~/Qt/Tools/CMake/bin/cmake --build . --target all
+            ~/Qt/Tools/CMake/CMake.app/Contents/bin/cmake -DCMAKE_BUILD_TYPE=Release -S ../gpt4all-chat -B .
+            ~/Qt/Tools/CMake/CMake.app/Contents/bin/cmake --build . --target all
   build-py-docs:
     docker:
       - image: circleci/python:3.8
