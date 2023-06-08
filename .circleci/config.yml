@@ -35,7 +35,7 @@ jobs:
       - run:
           name: Build
           command: |
-            export CMAKE_PREFIX_PATH=~/Qt/6.5.1/gcc_64/lib/cmake
+            export CMAKE_PREFIX_PATH=~/Qt/6.5.1/macos/lib/cmake
             mkdir build
             cd build
             ~/Qt/Tools/CMake/bin/cmake -DCMAKE_BUILD_TYPE=Release -S ../gpt4all-chat -B .
@@ -124,9 +124,9 @@ jobs:
           key: macos-qt-cache
           paths:
             - ~/Qt
-      #- run:
-          #name: Build
-          #command: |
+      - run:
+          name: Build
+          command: |
   build-py-docs:
     docker:
       - image: circleci/python:3.8
