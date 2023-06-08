@@ -108,9 +108,9 @@ jobs:
       - restore_cache:  # this is the new step to restore cache
           keys:
             - macos-qt-cache
-      - run: 
-          name: Setup macOS and Dependencies
-          command: |
+      #- run: 
+          #name: Setup macOS and Dependencies
+          #command: |
       - run:
           name: Installing Qt
           command: |
@@ -124,9 +124,9 @@ jobs:
           key: macos-qt-cache
           paths:
             - ~/Qt
-      - run:
-          name: Build
-          command: |
+      #- run:
+          #name: Build
+          #command: |
   build-py-docs:
     docker:
       - image: circleci/python:3.8
