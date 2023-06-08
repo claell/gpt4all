@@ -96,6 +96,37 @@ jobs:
               "-S ..\gpt4all-chat" `
               "-B ."
             & "C:\Qt\Tools\Ninja\ninja.exe"
+  build-gpt4all-chat-macos:
+    macos:
+      xcode: 14.0.0
+    steps:
+      - checkout
+      - run:
+          name: Update Submodules
+          command: |
+            git submodule update --init --recursive
+      - restore_cache:  # this is the new step to restore cache
+          keys:
+            - macos-qt-cache
+      - run: 
+          name: Setup macOS and Dependencies
+          command: |
+      - run:
+          name: Installing Qt
+          command: |
+            if [ ! -d ~/Qt ]; then
+              curl -o qt-installer.dmg https://gpt4all.io/ci/qt-unified-macOS-x64-4.6.0-online.dmg
+              hdiutil attach qt-unified-macOS-x64-4.6.0-online.dmg
+              /Volumes/qt-unified-macOS-x64-4.6.0-online --no-force-installations --no-default-installations --no-size-checking --default-answer --accept-licenses --confirm-command --accept-obligations --email $QT_EMAIL --password $QT_PASSWORD install qt.tools.cmake qt.tools.ifw.46 qt.tools.ninja qt.qt6.651.gcc_64 qt.qt6.651.qt5compat qt.qt6.651.debug_info qt.qt6.651.addons.qtpdf qt.qt6.651.addons.qthttpserver
+              hdiutil detach /Volumes/qt-unified-macOS-x64-4.6.0-online
+            fi
+      - save_cache:  # this is the new step to save cache
+          key: macos-qt-cache
+          paths:
+            - ~/Qt
+      - run:
+          name: Build
+          command: |
   build-py-docs:
     docker:
       - image: circleci/python:3.8
@@ -263,8 +294,10 @@ workflows:
   build-and-test-gpt4all-chat:
     #jobs:
       #- build-gpt4all-chat-linux
+    #jobs:
+      #- build-gpt4all-chat-windows
     jobs:
-      - build-gpt4all-chat-windows
+      - build-gpt4all-chat-macos
   # build-py-deploy:
   #   jobs:
   #     - build-py-linux:
