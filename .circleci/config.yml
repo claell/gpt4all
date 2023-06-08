@@ -85,12 +85,11 @@ jobs:
             & "C:\Qt\Tools\CMake_64\bin\cmake.exe" `
               "-DCMAKE_GENERATOR:STRING=Ninja" `
               "-DCMAKE_BUILD_TYPE=Release" `
-              "-DQT_QMAKE_EXECUTABLE:FILEPATH=C:\Qt\6.5.1\msvc2019_64\bin\qmake.exe" `
               "-DCMAKE_PREFIX_PATH:PATH=C:\Qt\6.5.1\msvc2019_64" `
               "-DCMAKE_MAKE_PROGRAM:FILEPATH=C:\Qt\Tools\Ninja\ninja.exe" `
               "-S ..\gpt4all-chat" `
               "-B ."
-            & "C:\Qt\Tools\CMake_64\bin\cmake.exe" "--build ." "--target all"
+            & "C:\Qt\Tools\CMake_64\bin\cmake.exe" "--build ."
   build-py-docs:
     docker:
       - image: circleci/python:3.8
