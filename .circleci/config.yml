@@ -127,6 +127,7 @@ jobs:
       - run:
           name: Build
           command: |
+            export PATH=$PATH:~/Qt/Tools/Ninja/
             mkdir build
             cd build
             ~/Qt/Tools/CMake/CMake.app/Contents/bin/cmake \
